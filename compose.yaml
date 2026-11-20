@@ -7,7 +7,7 @@ services:
     environment:
       DD_API_KEY: ${DD_API_KEY:?set DD_API_KEY in .env (Organization Settings > API Keys in Datadog)}
       DD_SITE: ${DD_SITE:?set DD_SITE in .env (see .env.example, e.g. datadoghq.eu)}
-      DD_ENV: ${DD_ENV:?set DD_ENV in .env (see .env.example, e.g. prod or staging)}
+      DD_ENV: ${DD_ENV:?set DD_ENV in .env (see .env.example, e.g. dev or prod or staging)}
       DD_HOSTNAME: ${DD_HOSTNAME:?set DD_HOSTNAME in .env (see .env.example, e.g. my-hostname)}
       DD_TAGS: "project:rdv team:infra"
       DD_APM_ENABLED: "false"
