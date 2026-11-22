@@ -3,6 +3,7 @@ services:
     image: registry.datadoghq.com/agent:7.85.5
     restart: unless-stopped
     cgroup: host
+    pid: host
     container_name: dd-agent
     environment:
       DD_API_KEY: ${DD_API_KEY:?set DD_API_KEY in .env (Organization Settings > API Keys in Datadog)}
@@ -11,14 +12,21 @@ services:
       DD_HOSTNAME: ${DD_HOSTNAME:?set DD_HOSTNAME in .env (see .env.example, e.g. my-hostname)}
       DD_TAGS: "project:rdv team:infra"
       DD_APM_ENABLED: "false"
+      DD_PROCESS_CONFIG_PROCESS_COLLECTION_ENABLED: "true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /etc/passwd:/etc/passwd:ro
     healthcheck:
       test: ["CMD", "agent" , "health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 30s
+  tools:
+    build:
+      context: ./services/tools
+    profiles: [tools]
+    pid: host
     
