@@ -88,6 +88,12 @@ Inspect the network check directly:
 docker compose exec datadog-agent agent check network
 ```
 
+### Planned API to Agent connection
+
+- The future `api` service will send APM traces and DogStatsD metrics through Unix domain sockets in a shared `/var/run/datadog` directory (`apm.socket` and `dsd.socket`); this is not configured yet.
+- With `network_mode: host`, the Agent is outside the Compose network and cannot be reached through its `datadog-agent` DNS name; sockets avoid that dependency and require no exposed TCP `8126` or UDP `8125` port.
+- DogStatsD sockets support container origin detection and tagging with `DD_DOGSTATSD_ORIGIN_DETECTION=true`; the Agent already uses the required host PID namespace. See Datadog's [APM](https://docs.datadoghq.com/containers/docker/apm/) and [DogStatsD socket documentation](https://docs.datadoghq.com/extend/dogstatsd/unix_socket/).
+
 ## Host diagnostics
 
 The `tools` service is built from Ubuntu 24.04 and includes `procps`, `sysstat`,
